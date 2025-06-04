@@ -1,0 +1,41 @@
+{
+    "manifest_version": 3,
+    "name": "Eunoia",
+    "version": "1.0",
+    "description": "Eunoia adds a button onto Twitter trackers for instant meme coin creation",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://discord.com/*",
+        "https://axiom.trade/*",
+        "https://nova.trade/*",
+        "https://photon-sol.tinyastro.io/*",
+        "https://www.uxento.io/tracker"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://discord.com/*",
+                "https://axiom.trade/*",
+                "https://nova.trade/*",
+                "https://photon-sol.tinyastro.io/*",
+                "https://www.uxento.io/tracker"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "Eunoia Wallet"
+    },
+    "icons": {
+        "16": "",
+        "32": "",
+        "64": ""
+    }
+}
