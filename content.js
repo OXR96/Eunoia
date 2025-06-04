@@ -71,7 +71,7 @@ function createButton(tweet, images = [], platform) {
     return button;
 }
 
-function createForm(tweetContent, images = []) {
+function createForm(tweet, images = []) {
     const existingPopup = document.getElementById('eunoia-popup');
     if (existingPopup) {
         document.body.removeChild(existingPopup);
@@ -555,8 +555,8 @@ function createForm(tweetContent, images = []) {
         }, 300);
     }
 
-    if (tweetInput && tweetContent) {
-        tweetInput.value = tweetContent;
+    if (tweetInput && tweet) {
+        tweetInput.value = tweet;
     }
 
     return popup;
