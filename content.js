@@ -96,7 +96,22 @@ function eunoia(root) {
             });
         }, 800);
     } else if (site === 'axiom') {
+        const posts = (root || document).querySelectorAll('div[role="button"].cursor-pointer.block.border-b');
 
+        posts.forEach(post => {
+            if (post.querySelector('.eunoia-button')) return;
+
+            const tracker = post.querySelector('div.flex-1.min-w-0');
+            if (!tracker) return;
+            
+            const tweet = post.querySelector('a[href*="x.com"], a[href*="truthsocial.com"]')?.getAttribute('href') || location.href;
+            const images = [...post.querySelectorAll('img')]
+                .map(img => img.src)
+                .filter(src => !!src);
+
+            const button = createButton(tweet, images, 'axiom');
+            tracker.appendChild(button);
+        });
     } else if (site === 'nova') {
 
     } else if (site === 'photon') {
