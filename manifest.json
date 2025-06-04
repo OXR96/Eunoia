@@ -37,8 +37,9 @@
         "default_title": "Eunoia Wallet"
     },
     "icons": {
-        "16": "",
-        "32": "",
-        "64": ""
+        "16": "Icons/icon16.png",
+        "32": "Icons/icon32.png",
+        "48": "Icons/icon48.png",
+        "128": "Icons/icon128.png"
     }
 }
