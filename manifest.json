@@ -13,7 +13,10 @@
         "https://axiom.trade/*",
         "https://nova.trade/*",
         "https://photon-sol.tinyastro.io/*",
-        "https://www.uxento.io/tracker"
+        "https://www.uxento.io/tracker",
+        "https://*.helius-rpc.com/*",
+        "https://pump.fun/*",
+        "https://pumpportal.fun/*"
     ],
     "content_scripts": [
         {
