@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            width: 350px;
+            min-height: 400px;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #171717;
+            color: white;
+        }
+        
+        .container {
+            padding: 24px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .header p {
+            margin: 8px 0 0;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+        
+        .wallet-setup {
+            display: none;
+        }
+        
+        .wallet-display {
+            display: none;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: #171717;
+            border: 1px solid #2e2f2f;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+        }
+        
+        .form-group input:focus {
+            border-color: #4a5568;
+        }
+        
+        .form-group textarea {
+            width: 100%;
+            height: 90px;
+            padding: 12px;
+            background-color: #171717;
+            border: 1px solid #2e2f2f;
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+            resize: vertical;
+        }
+        
+        .form-group textarea:focus {
+            border-color: #4a5568;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 12px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-family: inherit;
+        }
+        
+        .button:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .button:disabled {
+            background-color: #4a5568;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .button.secondary {
+            background-color: white;
+            color: black;
+            border: none;
+        }
+        
+        .button.secondary:hover {
+            background-color: #e5e5e5;
+        }
+        
+        .error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        
+        .success {
+            color: #10b981;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+        
+        .wallet-display {
+            display: none;
+        }
+
+        .wallet-card {
+            background-color: #0a0a0a;
+            border: 1px solid #27272a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .wallet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .wallet-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .wallet-address {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            color: #71717a;
+            background-color: #18181b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #27272a;
+            word-break: break-all;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .balance-section {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .balance-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .balance-currency {
+            font-size: 16px;
+            font-weight: 500;
+            color: #a1a1aa;
+        }
+
+        .balance-loading {
+            font-size: 16px;
+            color: #71717a;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #4a5568;
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .button-group .button {
+            flex: 1;
+        }
+
+        .sol-icon {
+            display: flex;
+            align-items: center;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Eunoia Wallet</h1>
+            <p>Manage your Solana wallet for token creation</p>
+        </div>
+        
+        <div class="wallet-setup" id="walletSetup">
+            <div class="form-group">
+                <label for="privateKey">Private Key</label>
+                <textarea 
+                    id="privateKey"
+                    rows="30"
+                ></textarea>
+                <div id="privateKeyError" class="error"></div>
+                <div id="privateKeySuccess" class="success"></div>
+            </div>
+            
+            <button class="button" id="saveWalletBtn">
+                <span id="saveWalletText">Save Wallet</span>
+                <span id="saveWalletLoading" class="loading" style="display: none;"></span>
+            </button>
+            
+            <div style="margin-top: 16px; font-size: 14px; color: #9ca3af; text-align: center;">
+                Your private key is encrypted and stored locally on your device
+            </div>
+        </div>
+        
+        <div class="wallet-display" id="walletDisplay">
+            <div class="wallet-card">
+                <div class="wallet-header">
+                    <span class="wallet-label">Wallet Address</span>
+                </div>
+                <div class="wallet-address" id="walletAddress"></div>
+                <div class="balance-section">
+                    <span class="balance-amount" id="balanceAmount">0.000</span>
+                    <div class="sol-icon">
+                        <svg width="20" height="20" viewBox="0 0 397.7 311.7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 237.9z" fill="url(#paint0_linear)"/>
+                            <path d="M64.6 3.8C67.1 1.4 70.4 0 73.8 0h317.4c5.8 0 8.7 7 4.6 11.1L333.1 73.8c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1L64.6 3.8z" fill="url(#paint1_linear)"/>
+                            <path d="M333.1 120.1c-2.4-2.4-5.7-3.8-9.2-3.8H6.5c-5.8 0-8.7 7-4.6 11.1l62.7 62.7c2.4 2.4 5.7 3.8 9.2 3.8h317.4c5.8 0 8.7-7 4.6-11.1l-62.7-62.7z" fill="url(#paint2_linear)"/>
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="360.8" y1="351.4" x2="141.4" y2="132.0" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#00FFA3"/>
+                                    <stop offset="1" stop-color="#DC1FFF"/>
+                                </linearGradient>
+                                <linearGradient id="paint1_linear" x1="264.8" y1="77.6" x2="45.4" y2="-141.8" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#00FFA3"/>
+                                    <stop offset="1" stop-color="#DC1FFF"/>
+                                </linearGradient>
+                                <linearGradient id="paint2_linear" x1="312.5" y1="214.5" x2="93.1" y2="-4.9" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#00FFA3"/>
+                                    <stop offset="1" stop-color="#DC1FFF"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <span class="balance-loading" id="balanceLoading" style="display: none;">Loading...</span>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="button secondary" id="refreshBalanceBtn">
+                    <span id="refreshText">Refresh</span>
+                    <span id="refreshLoading" class="loading" style="display: none;"></span>
+                </button>
+                <button class="button secondary" id="removeWalletBtn">Remove Wallet</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+</body>
+</html>
