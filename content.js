@@ -103,7 +103,7 @@ function eunoia(root) {
 
             const tracker = post.querySelector('div.flex-1.min-w-0');
             if (!tracker) return;
-            
+
             const tweet = post.querySelector('a[href*="x.com"], a[href*="truthsocial.com"]')?.getAttribute('href') || location.href;
             const images = [...post.querySelectorAll('img')]
                 .map(img => img.src)
@@ -113,9 +113,40 @@ function eunoia(root) {
             tracker.appendChild(button);
         });
     } else if (site === 'nova') {
+        const posts = (root || document).querySelectorAll('a.flex.w-full.rounded-\\\[8px\\\].border');
 
+        posts.forEach(post => {
+            if (post.querySelector('.eunoia-button')) return;
+
+            const tracker = post.querySelector('div.flex.w-full.flex-col p');
+            if (!tracker) return;
+
+            const postLink = post.getAttribute('href') || location.href;
+            const images = [...post.querySelectorAll('img')]
+                .map(img => img.src)
+                .filter(src => !!src);
+
+            const button = createButton(postLink, images, 'nova');
+
+            tracker.appendChild(button);
+        });
     } else if (site === 'photon') {
+        const posts = (root || document).querySelectorAll('div.react-tweet-theme article');
 
+        posts.forEach(post => {
+            if (post.querySelector('.eunoia-button')) return;
+
+            const feed = post.querySelector('div > p');
+            if (!feed) return;
+
+            const tweet = post.querySelector('a[href*="twitter.com"]')?.getAttribute('href') || location.href;
+            const images = [...post.querySelectorAll('img')]
+                .map(img => img.src)
+                .filter(src => !!src);
+
+            const button = createButton(tweet, images, 'photon');
+            feed.appendChild(button);
+        });
     } else if (site === 'uxento') {
 
     }
