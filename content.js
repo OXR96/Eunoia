@@ -20,4 +20,22 @@ function eunoia() {
     }
 }
 
-eunoia();
+// // // // // // // //
+
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => {
+            if (!(node instanceof HTMLElement)) return;
+            eunoia(node);
+        });
+    });
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+
+// // // // // // // //
+
+eunoia(document);
