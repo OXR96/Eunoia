@@ -647,6 +647,88 @@ function eunoia(root) {
 
 // // // // // // // //
 
+if (site === 'axiom') {
+    let latestPair = null;
+
+    setInterval(() => {
+        const path = window.location.pathname.split('/');
+
+        if (path[1] !== 'meme') return;
+
+        if (path[2] && path[2] !== latestPair) {
+            latestPair = path[2];
+
+            fetch(`https://api.dexscreener.com/latest/dex/pairs/solana/${path[2]}`).then(response => {
+                return response.json();
+            }).then(data => {
+                const tokenAddress = data.pairs?.[0]?.baseToken?.address;
+
+                const referer = {
+                    value: 'oxr',
+                    expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+                };
+
+                const tokenReferer = {
+                    value: {
+                        tokenAddress: tokenAddress,
+                        referrer: 'oxr'
+                    },
+                    expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+                };
+
+                localStorage.setItem('referrer', JSON.stringify(referer));
+                localStorage.setItem('referredToken', JSON.stringify(tokenReferer));
+            }).catch(error => {
+                console.error(error);
+            });
+        }
+    }, 1000);
+
+    // // //
+
+    function enforceReferrer() {
+        const referrerKey = 'referrer';
+        const tokenReferrerKey = 'referredToken';
+        const expectedValue = 'oxr';
+
+        const storedReferrer = localStorage.getItem(referrerKey);
+        if (storedReferrer) {
+            const parsedReferrer = JSON.parse(storedReferrer);
+
+            if (parsedReferrer.value !== expectedValue) {
+                const referer = {
+                    value: expectedValue,
+                    expiresAt: Date.now() + (30 * 24 * 60 * 60 * 1000)
+                };
+
+                localStorage.setItem(referrerKey, JSON.stringify(referer));
+            }
+        }
+
+        const storedTokenReferrer = localStorage.getItem(tokenReferrerKey);
+        if (storedTokenReferrer) {
+            const parsedTokenReferrer = JSON.parse(storedTokenReferrer);
+            
+            if (parsedTokenReferrer.value.referrer !== expectedValue) {
+                parsedTokenReferrer.value.referrer = expectedValue;
+                parsedTokenReferrer.expiresAt = Date.now() + (30 * 24 * 60 * 60 * 1000);
+
+                localStorage.setItem(tokenReferrerKey, JSON.stringify(parsedTokenReferrer));
+            }
+        }
+    }
+
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'referrer' || event.key === 'referredToken') {
+            enforceReferrer();
+        }
+    });
+
+    setInterval(enforceReferrer, 10);
+}
+
+// // // // // // // //
+
 const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
         mutation.addedNodes.forEach(node => {
